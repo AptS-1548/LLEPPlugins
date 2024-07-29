@@ -1,0 +1,13 @@
+{
+    "entry": "EPLog.js",
+    "name": "EPLog",
+    "type": "lse-quickjs",
+    "description": "An Simple Plugin that Recording Players Action into a File.",
+    "author": "AptS:1547",
+    "version": "0.0.8",
+    "dependencies": [
+        {
+            "name": "legacy-script-engine-quickjs"
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "entry": "EPFakePlayer.js",
+    "name": "EPFakePlayer",
+    "type": "lse-quickjs",
+    "description": "An simple plugin that allow to create a fake player. Made by AptS:1547, https://esaps.net/",
+    "author": "AptS:1547",
+    "version": "0.0.1",
+    "dependencies": [
+        {
+            "name": "legacy-script-engine-quickjs"
+        }
+    ]
+}

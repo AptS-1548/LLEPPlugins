@@ -1,0 +1,13 @@
+{
+    "entry": "EPBDSave.js",
+    "name": "EPBDSave",
+    "type": "lse-quickjs",
+    "description": "A simple plugin compatible with the java version of the save command. Made by AptS:1547, https://esaps.net/",
+    "author": "AptS:1547",
+    "version": "0.0.1",
+    "dependencies": [
+        {
+            "name": "legacy-script-engine-quickjs"
+        }
+    ]
+}

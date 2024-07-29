@@ -1,0 +1,13 @@
+{
+    "entry": "EPBanlist.js",
+    "name": "EPBanlist",
+    "type": "lse-quickjs",
+    "description": "Ban Command that transplant from Java Edition. Made by AptS:1547, https://esaps.net/",
+    "author": "AptS:1547",
+    "version": "0.0.1",
+    "dependencies": [
+        {
+            "name": "legacy-script-engine-quickjs"
+        }
+    ]
+}

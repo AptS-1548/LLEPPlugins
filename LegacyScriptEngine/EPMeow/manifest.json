@@ -1,0 +1,13 @@
+{
+    "entry": "EPMeow.js",
+    "name": "EPMeow",
+    "type": "lse-quickjs",
+    "description": "Meow Meow Meow Meow Meow Meow!",
+    "author": "AptS:1547",
+    "version": "0.0.1",
+    "dependencies": [
+        {
+            "name": "legacy-script-engine-quickjs"
+        }
+    ]
+}
