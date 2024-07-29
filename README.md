@@ -1,7 +1,7 @@
 # AptS-1547/LLEPPlugins
-My plugins for LeviLaminaBDS.  
-Now there are 5 plugins in this repository.  
+Plugins I developed for LeviLaminaBDS.  
+There are now 5 plugins in the repository.  
 
-**Plugins that in the `legacyScriptEngine` required your LLBDS installed [LiteLDev/LegacyScriptEngine](https://github.com/LiteLDev/LegacyScriptEngine)**  
+**Plugins that in the `legacyScriptEngine` requires you to install the LLBDS plugin [LiteLDev/LegacyScriptEngine](https://github.com/LiteLDev/LegacyScriptEngine)**  
 
-I will soon complete Readme.md, maybe tomorrow.
+I will finish the README.md soon, maybe tomorrow.  
