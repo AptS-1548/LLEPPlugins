@@ -1,0 +1,13 @@
+{
+    "entry": "EPMoney.js",
+    "name": "EPMoney",
+    "type": "lse-quickjs",
+    "description": "An alternative plugin to LegacyMoney for Linux LLBDS. Using NoSQL.",
+    "author": "AptS:1547",
+    "version": "0.0.1",
+    "dependencies": [
+        {
+            "name": "legacy-script-engine-quickjs"
+        }
+    ]
+}

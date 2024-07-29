@@ -53,6 +53,7 @@ mc.listen("onServerStarted", () => {                              //插件启动
                 for (var i = 0; i < nekoList.length; i++) {    //遍历查询
                     nekoListStr += `${nekoList[i]}, `;
                 }
+                nekoListStr.slice(0, -2);
                 return out.success(nekoListStr);
             
             case "set":
