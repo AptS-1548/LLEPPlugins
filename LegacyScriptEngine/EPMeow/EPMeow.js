@@ -22,7 +22,7 @@ mc.listen("onServerStarted", () => {                              //插件启动
         if ( res.whichPlayer[0] == null ) return out.error("Player not exist.");
         mc.broadcast(`<${res.whichPlayer[0].name}> ${res.message}`, 1);
     }); 
-    asAnotherPlayer.setup( res.whichPlayer[0].name);
+    asAnotherPlayer.setup();
 
 
     const youAreNeko = mc.newCommand("neko", "Let us become cat! Made by AptS:1547, https://esaps.net/", PermType.GameMasters);

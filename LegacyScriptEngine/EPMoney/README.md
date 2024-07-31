@@ -8,7 +8,7 @@ An alternative plugin to LegacyMoney for Linux LLBDS. Using NoSQL.
 | Command                              | Description                     | Permission |
 | ------------------------------------ | ------------------------------- | ---------- |
 | /epmoney query                       | How many money do you have      | Everyone   |
-| /epmoney pay                         | Transfer money to other players | Everyone   |
+| /epmoney pay \<Player\> \<Money\>    | Transfer money to other players | Everyone   |
 | /epmoney set \<Player\> \<Money\>    | Set player's money              | Operator   |
 | /epmoney add \<Player\> \<Money\>    | Add player's money              | Operator   |
 | /epmoney reduce \<Player\> \<Money\> | Reduce player's money           | Operator   |
