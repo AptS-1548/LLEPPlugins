@@ -83,3 +83,7 @@ mc.listen("onOpenContainer", (player,block) => {                                
 mc.listen("afterPlaceBlock", (player,block) => {                                                      //玩家放置方块拦截
     logger.info("[PBAction]", ` ${player.name}, ${block.type}, x${block.pos.x}, y${block.pos.y}, z${block.pos.z}`);
 });
+
+mc.listen("onTakeItem", (player,entity,item) => {
+    logger.info("[TIAction]", ` ${player.name}, ${item.type}, x${entity.blockPos.x}, y${entity.blockPos.y}, z${entity.blockPos.z}`);
+});

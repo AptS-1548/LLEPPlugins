@@ -1,0 +1,13 @@
+{
+    "entry": "EPTpa.js",
+    "name": "EPTpa",
+    "type": "lse-quickjs",
+    "description": "Teleport, without operator permission.",
+    "author": "AptS:1547",
+    "version": "0.0.1",
+    "dependencies": [
+        {
+            "name": "legacy-script-engine-quickjs"
+        }
+    ]
+}
