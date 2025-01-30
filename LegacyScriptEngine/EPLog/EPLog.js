@@ -1,89 +1,193 @@
+function writeLog(text) {
+    File.writeLine("./logs/EPLog.log", text);
+}
+
 mc.listen("onServerStarted", () => {                                                                 //服务器启动
     /*
      *  初始化区域
      */
-    logger.setFile("./logs/EPLog.log", 4);                        //设置输出日志到文件
-    logger.info("[serverStart]", " Server Started");              //宣布插件启动完成
+    logger.info("Logger Started.");
+    writeLog(JSON.stringify({
+        event: "SESAction",
+        timestamp: new Date().getTime()
+    }));              //宣布插件启动完成
 });
 
 /*
  *  监听区域
  */
 mc.listen("onJoin", (player) => {                                                                    //玩家加入游戏
-    player.sendToast("欢迎！", `欢迎${player.name}加入服务器！`);
-    logger.info("[playerJoin]" ,` ${player.name} is joining the server, on ${player.pos.dim}, x:${parseInt(player.pos.x)}, y:${parseInt(player.pos.y)}, z:${parseInt(player.pos.z)}`);
+    writeLog(JSON.stringify({
+        event: "playerJoin",
+        player: player.name,
+        position: {
+            dim: player.pos.dimid,
+            x: parseInt(player.pos.x),
+            y: parseInt(player.pos.y),
+            z: parseInt(player.pos.z)
+        },
+        timestamp: new Date().getTime()
+    }));
+    player.sendToast("欢迎！", `欢迎回家，${player.name}！`);
 });
 
 mc.listen("onLeft", (player) => {                                                                    //玩家离开游戏
-    logger.info("[playerDisconnect]" ,` ${player.name} is leaving the server, on ${player.pos.dim}, x:${parseInt(player.pos.x)}, y:${parseInt(player.pos.y)}, z:${parseInt(player.pos.z)}`);
+    writeLog(JSON.stringify({
+        event: "playerDisconnect",
+        player: player.name,
+        position: {
+            dim: player.pos.dimid,
+            x: parseInt(player.pos.x),
+            y: parseInt(player.pos.y),
+            z: parseInt(player.pos.z)
+        },
+        timestamp: new Date().getTime()
+    }));
 });
 
 mc.listen("onChat", (player, msg) => {                                                               //玩家发送消息
-    logger.info("[playerChat]", ` ${player.name} Send an message -> `, msg);
+    writeLog(JSON.stringify({
+        event: "playerChat",
+        player: player.name,
+        message: msg,
+        timestamp: new Date().getTime()
+    }));
 });
 
-mc.listen("onUseItemOn", (player,item,block,side,pos) => {                                           //玩家使用打火石拦截
-    if ( item.type == "minecraft:flint_and_steel") {
-        logger.info("[FASAction]", ` ${player.name} is trying to ignite ${block.name}, on ${player.pos.dim}, x:${parseInt(player.pos.x)}, y:${parseInt(player.pos.y)}, z:${parseInt(player.pos.z)}`);
+mc.listen("onUseItemOn", (player, item, block, side, pos) => {                                           //玩家使用打火石拦截
+    if (item.type == "minecraft:flint_and_steel") {
+        writeLog(JSON.stringify({
+            event: "FASAction",
+            player: player.name,
+            block: block.name,
+            position: {
+                dim: player.pos.dimid,
+                x: parseInt(player.pos.x),
+                y: parseInt(player.pos.y),
+                z: parseInt(player.pos.z)
+            },
+            timestamp: new Date().getTime()
+        }));
     }
 });
 
-mc.listen("onEntityExplode", (source,pos,radius,maxResistance,isDestroy,isFire) => {                 //TNT爆炸拦截
+mc.listen("onEntityExplode", (source, pos, radius, maxResistance, isDestroy, isFire) => {                 //TNT爆炸拦截
     var allPlayer = mc.getOnlinePlayers();
     var minLength = 0;
     var searchPlayer;
-    if ( source.type != "minecraft:wither_skull" && source.type != "minecraft:wither_skull_dangerous" && source.type != "minecraft:fireball") {
-        logger.info("[EPAction]", ` ${source.type} exploded, on ${pos.dim}, x:${parseInt(pos.x)}, y:${parseInt(pos.y)}, z:${parseInt(pos.z)}`);
-        for(var i = 0; i < allPlayer.length; i++) {
-            if ( allPlayer[i].pos.dim != pos.dim) continue;
+    if (source.type != "minecraft:wither_skull" && source.type != "minecraft:wither_skull_dangerous" && source.type != "minecraft:fireball") {
+        for (var i = 0; i < allPlayer.length; i++) {
+            if (allPlayer[i].pos.dimid != pos.dimid) continue;
             var length = allPlayer[i].distanceTo(pos);
-            if ( i == 0 ) {
+            if (i == 0) {
                 minLength = length;
                 searchPlayer = allPlayer[i];
-            } else if ( i != 0 && length < minLength ) {
+            } else if (i != 0 && length < minLength) {
                 minLength = length;
                 searchPlayer = allPlayer[i];
             }
         }
-        logger.info("[EPAction]", ` The player closest to the explosion was ${searchPlayer.name}, only ${minLength} meters away.`);
+        writeLog(JSON.stringify({
+            event: "EPAction",
+            source: source.type,
+            position: {
+                dim: pos.dimid,
+                x: parseInt(pos.x),
+                y: parseInt(pos.y),
+                z: parseInt(pos.z)
+            },
+            timestamp: new Date().getTime(),
+            who: searchPlayer.name,
+            distance: minLength
+        }));
     }
 });
 
-mc.listen("onRespawnAnchorExplode", (pos,player) => {                                                //重生锚爆炸拦截
-    logger.info("[RAEAction]", ` ${player.name} made the Respawn Anchor exploded, on ${player.pos.dim}, x:${parseInt(player.pos.x)}, y:${parseInt(player.pos.y)}, z:${parseInt(player.pos.z)}`);
+mc.listen("onRespawnAnchorExplode", (pos, player) => {                                                //重生锚爆炸拦截
+    writeLog(JSON.stringify({
+        event: "RAEAction",
+        player: player.name,
+        position: {
+            dim: player.pos.dimid,
+            x: parseInt(player.pos.x),
+            y: parseInt(player.pos.y),
+            z: parseInt(player.pos.z)
+        },
+        timestamp: new Date().getTime()
+    }));
 });
 
-mc.listen("onChangeDim", (player,dimid) => {                                                         //玩家维度变更拦截
-    var dimension;
-    switch (dimid){
-        case 0:
-            dimension = "主世界";
-            break;
-        case 1:
-            dimension = "下界";
-            break;
-        case 2:
-            dimension = "末地";
-            break;
-        default:
-            dimension = "未知维度";
-            break;
-    }
-    logger.info("[DCAction]", ` ${player.name} changed his dimension, from ${player.pos.dim} to ${dimension}, before teleporting are x:${parseInt(player.pos.x)}, y:${parseInt(player.pos.y)}, z:${parseInt(player.pos.z)}`);
+mc.listen("onChangeDim", (player, dimid) => {                                                         //玩家维度变更拦截
+    writeLog(JSON.stringify({
+        event: "DCAction",
+        player: player.name,
+        to: dimid,
+        position: {
+            dim: player.pos.dimid,
+            x: parseInt(player.pos.x),
+            y: parseInt(player.pos.y),
+            z: parseInt(player.pos.z)
+        },
+        timestamp: new Date().getTime()
+    }));
 });
 
-mc.listen("onDestroyBlock", (player,block) => {                                                      //玩家摧毁方块拦截
-    logger.info("[DBAction]", ` ${player.name}, ${block.type}, x${block.pos.x}, y${block.pos.y}, z${block.pos.z}`);
+mc.listen("onDestroyBlock", (player, block) => {                                                      //玩家摧毁方块拦截
+    writeLog(JSON.stringify({
+        event: "DBAction",
+        player: player.name,
+        block: block.type,
+        position: {
+            dim: block.pos.dimid,
+            x: parseInt(block.pos.x),
+            y: parseInt(block.pos.y),
+            z: parseInt(block.pos.z)
+        },
+        timestamp: new Date().getTime()
+    }));
 });
 
-mc.listen("onOpenContainer", (player,block) => {                                                     //玩家打开容器拦截
-    logger.info("[COAction]", ` ${player.name} opened container, ${block.type} on x${block.pos.x}, y${block.pos.y}, z${block.pos.z}`);
+mc.listen("onOpenContainer", (player, block) => {                                                     //玩家打开容器拦截
+    writeLog(JSON.stringify({
+        event: "COAction",
+        player: player.name,
+        block: block.type,
+        position: {
+            dim: block.pos.dimid,
+            x: parseInt(block.pos.x),
+            y: parseInt(block.pos.y),
+            z: parseInt(block.pos.z)
+        },
+        timestamp: new Date().getTime()
+    }));
 });
 
-mc.listen("afterPlaceBlock", (player,block) => {                                                      //玩家放置方块拦截
-    logger.info("[PBAction]", ` ${player.name}, ${block.type}, x${block.pos.x}, y${block.pos.y}, z${block.pos.z}`);
+mc.listen("afterPlaceBlock", (player, block) => {                                                      //玩家放置方块拦截
+    writeLog(JSON.stringify({
+        event: "PBAction",
+        player: player.name,
+        block: block.type,
+        position: {
+            dim: block.pos.dimid,
+            x: parseInt(block.pos.x),
+            y: parseInt(block.pos.y),
+            z: parseInt(block.pos.z)
+        },
+        timestamp: new Date().getTime()
+    }));
 });
 
-mc.listen("onTakeItem", (player,entity,item) => {
-    logger.info("[TIAction]", ` ${player.name}, ${item.type}, x${entity.blockPos.x}, y${entity.blockPos.y}, z${entity.blockPos.z}`);
+mc.listen("onTakeItem", (player, entity, item) => {
+    writeLog(JSON.stringify({
+        event: "TIAction",
+        player: player.name,
+        item: item.type,
+        position: {
+            dim: parseInt(entity.blockPos.dimid),
+            x: parseInt(entity.blockPos.x),
+            y: parseInt(entity.blockPos.y),
+            z: parseInt(entity.blockPos.z)
+        },
+        timestamp: new Date().getTime()
+    }));
 });
